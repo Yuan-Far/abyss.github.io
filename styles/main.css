@@ -837,6 +837,7 @@ figure figcaption {
 .img-box img {
   width: 400px;
   height: 200px;
+  background-color: #c3c3c3;
   object-fit: cover;
 }
 .fh5co-meta a {
