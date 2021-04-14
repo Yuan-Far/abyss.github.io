@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://qingwu-aby.github.io/</id>
     <title>青屋</title>
-    <updated>2021-04-14T08:08:30.365Z</updated>
+    <updated>2021-04-14T08:11:58.641Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://qingwu-aby.github.io/"/>
     <link rel="self" href="https://qingwu-aby.github.io/atom.xml"/>
@@ -10,13 +10,6 @@
     <logo>https://qingwu-aby.github.io/images/avatar.png</logo>
     <icon>https://qingwu-aby.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 青屋</rights>
-    <entry>
-        <title type="html"><![CDATA[Rust--1]]></title>
-        <id>https://qingwu-aby.github.io/post/7V8FzDguP/</id>
-        <link href="https://qingwu-aby.github.io/post/7V8FzDguP/">
-        </link>
-        <updated>2021-04-07T09:24:04.000Z</updated>
-    </entry>
     <entry>
         <title type="html"><![CDATA[页面可视化]]></title>
         <id>https://qingwu-aby.github.io/post/-b1BVJBAF/</id>
@@ -127,5 +120,12 @@
         <link href="https://qingwu-aby.github.io/post/dong-tai-gui-hua-2-cou-ling-qian/">
         </link>
         <updated>2020-06-18T10:18:18.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[动态规划---1（斐波那契数列说起）·]]></title>
+        <id>https://qingwu-aby.github.io/post/dong-tai-gui-hua-1fei-bo-na-qi-shu-lie-shuo-qi/</id>
+        <link href="https://qingwu-aby.github.io/post/dong-tai-gui-hua-1fei-bo-na-qi-shu-lie-shuo-qi/">
+        </link>
+        <updated>2020-06-17T09:47:18.000Z</updated>
     </entry>
 </feed>
