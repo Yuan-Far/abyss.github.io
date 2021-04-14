@@ -840,6 +840,18 @@ figure figcaption {
   background-color: #c3c3c3;
   object-fit: cover;
 }
+.empty-img {
+  position: relative;
+}
+.empty-img::before {
+  content: 'NO IMAGE';
+  position: absolute;
+  top: calc(50% - 18px);
+  font-size: 36px;
+  font-weight: bold;
+  left: 34%;
+  color: #f1f1f1;
+}
 .fh5co-meta a {
   color: #f7c873;
   text-decoration: none;
