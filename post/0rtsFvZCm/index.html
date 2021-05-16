@@ -158,99 +158,98 @@
             </figure>
             <span class="fh5co-meta animate-box">
                 
+                    <div class="tag-container">
+                        
+                            <a href="https://qingwu-aby.github.io/tag/Bo2MqkwLq/" class="tag">React, </a>
+                        
+                    </div>
+                
             </span>
-            <h2 class="fh5co-article-title animate-box">React源码系列1---React15和16的差别</h2>
+            <h2 class="fh5co-article-title animate-box">不知名React--1</h2>
             <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
-                <li>2020-09-23</li>
-                <li>874字</li>
-                <li>4 min read</li>
+                <li>2020-09-20</li>
+                <li>376字</li>
+                <li>2 min read</li>
             </ol>
 
             <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
                 <div class="row">
                     <div class="col-md-12 animate-box post-content">
-                        <p> <p>React不同版本源码的差异</p>
-<!-- more -->
-<p><strong>React的理念</strong></p>
+                        <p> <p>[toc]</p>
+<!-- 迫于无奈特意开了这个系列，遵照网上的一些资源加上自己的理解去深入的学习一下React -->
+<hr>
+<h1 id="准备工作">准备工作</h1>
+<ol>
+<li>我们需要知道什么是虚拟DOM</li>
+<li>如何生成虚拟DOM</li>
+</ol>
+<h2 id="什么是虚拟dom">什么是虚拟DOM</h2>
 <blockquote>
-<p>速度快，响应自然</p>
-</blockquote>
-<h1 id="react的架构">React的架构</h1>
-<h2 id="react15">React15</h2>
-<ul>
-<li>Reconciler——找出发生变化的组件</li>
-<li>Renderer——渲染发生变化的组件</li>
-</ul>
-<h3 id="reconciler">Reconciler</h3>
-<blockquote>
-<p><code>React</code>中会通过<code>this.setState</code>,<code>this.forceUpdate</code>,<code>ReactDom.render</code>等方法更新组件</p>
-<ul>
-<li>调用函数组件、class组件的<code>render</code>方法，将返回的JSX转换为虚拟DOM</li>
-<li>将虚拟DOM与上次的进行比较</li>
-<li>找出本次发生更新的虚拟DOM</li>
-<li>通知<strong>Renderer</strong>将变化的虚拟DOM渲染到页面上</li>
-</ul>
-</blockquote>
-<h3 id="renderer">Renderer</h3>
-<blockquote>
-<p>每次更新发生的时候，<strong>Renderer</strong>接收到<strong>Reconciler</strong>的通知，将变化的组件渲染到当前的宿主环境</p>
-</blockquote>
-<h3 id="react15的缺陷">React15的缺陷</h3>
-<p><strong>无法支持同步更新</strong><br>
-<strong>递归的去更新会导致某写情况下页面的渲染结果不一致</strong></p>
-<blockquote>
-<p>在<code>Reconciler</code>中，<code>update</code>的组件会调用<code>updateComponent</code>,<code>mount</code>的组件会调用<code>mountComponent</code>，这两个方法都是递归执行的</p>
-<p>JS是一门单线程的语言，他的<code>GUI渲染线程</code>和<code>JS主线程</code>是互斥的，也就是说在页面执行我们的js代码的时候是不能够去渲染和绘制页面的，在我们渲染每一帧页面的时候：</p>
-</blockquote>
-<pre><code>JS代码执行-------样式布局-------样式绘制
-</code></pre>
-<blockquote>
-<ul>
-<li>当JS代码执行的时间超过每一帧的时长的时候，页面上就无法反映出本次渲染的结果</li>
-<li>同时，对于<code>React</code>来说，因为递归执行的原因，所以会导致页面一旦开始更新就无法终止；如果我们页面的层级变得很深，就会导致递归更新的时间过长，页面无法渲染</li>
-<li><strong>Scheduler</strong>和<strong>Reconciler</strong>是交替渲染的</li>
-</ul>
-</blockquote>
-<h2 id="react16">React16</h2>
-<blockquote>
-<p><code>React16</code>的架构有三层：</p>
-<ul>
-<li>Schduler（调度器）——调度人物的优先级，高优先级任务优先进入<strong>Reconciler</strong></li>
-<li>Reconciler（协调器）——找出变化的组件（<code>Fiber</code>架构？）</li>
-<li>Renderer（渲染器）——将变化的组件渲染到页面上</li>
-</ul>
-<blockquote>
-<p>其中<strong>Scheduler</strong>和<strong>Reconciler</strong>是平台无关的</p>
-</blockquote>
-</blockquote>
-<h3 id="scheduler调度器">Scheduler（调度器）</h3>
-<blockquote>
-<p>我们以浏览器每一帧是否有剩余时间作为任务中断的标准，需要有一种机制通知我们浏览器什么时候有剩余时间----<code>requestIdleCallback</code><br>
-<code>React</code>实现了<code>requestIdleCallback</code>的polyfill---<strong>Scheduler</strong>；除了在浏览器空闲时间触发回调，还提供了多种调度优先级</p>
-</blockquote>
-<h3 id="reconciler协调器">Reconciler（协调器）</h3>
-<blockquote>
-<p>在<code>React15</code>中，<strong>Reconciler</strong>是递归处理虚拟DOM的<br>
-<code>React16</code>中更新的过程从递归变成了可以终中断的循环过程，每一次循环都回去调用<code>shouleYield</code>判断当前是否有剩余时间</p>
-</blockquote>
-<pre><code class="language-javascript">function workLoopConcurrent() {
-    while(workInProgress !== null &amp;&amp; !shouldYield()) {
-        workInProgress = performUnitOfWork(workInProgress)
-    }
+<p>我们都知道浏览器渲染一个页面是首先生成一棵DOM树，然后再渲染<code>css</code>,<code>js</code>；据此可知道，我们的虚拟DOM树实际上就是一个个具有固定格式的<code>js</code>对象</p>
+<pre><code class="language-javascript"> const treeObj = {
+  tag: 'div',
+  attrs: {
+      'className': 'test-class_title'
+  },
+  children: [
+      {
+          key: 'p',
+          attrs: {
+              className: 'test-class-children_title'
+          }
+          children: [
+              ...
+          ]
+      }
+  ]
 }
 </code></pre>
-<blockquote>
-<p>关于<code>React15</code>中的因为一些特殊原因导致中断更新的时候DOM渲染不完全的问题</p>
-<p>在<code>React16</code>中，<strong>Reconciler</strong>和<strong>Renderer</strong>不是交替工作的。当<strong>Scheduler</strong>将任务交给<strong>Reconciler</strong>的时候，<strong>Reconciler</strong>会为变化的虚拟DOM搭上增/删/更新的标记</p>
-<blockquote>
-<p>其他的<a href="https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/react-reconciler/src/ReactSideEffectTags.js">标记</a><br>
-因为整个<strong>Scheduler</strong>和<strong>Reconciler</strong>的过程都是在内存中进行的。只有当组件都完成在<strong>Reconciler</strong>的工作，才会统一交给<strong>Renderer</strong></p>
+<p>如上所述，通过这个一个简单的对象就能渲染出一个真实的DOM，其中<code>p</code>标签实际上是<code>div</code>的一个子元素，真实节点描述如下：</p>
+<pre><code class="language-javascript">&lt;div className='test-class_title'&gt;
+  &lt;p className='test-class-children_title'&gt;&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
 </blockquote>
-</blockquote>
-<h3 id="renderer渲染器">Renderer（渲染器）</h3>
+<h2 id="如何生成一棵dom树">如何生成一棵<code>DOM</code>树</h2>
 <blockquote>
-<p><strong>Renderer</strong>根据<strong>Reconciler</strong>为虚拟DOM的打上的标记，同步执行对应的DOM操作。<br>
-<strong>Scheduler</strong>和<strong>Reconciler</strong>中的步骤随时会因为，有更高优先级的任务进来，或者当前帧没有剩余时间而中断。因为 <strong>Scheduler</strong>和<strong>Reconciler</strong>中的工作都是在内存中进行的，并不会更新页面，所以即使这个里面出现反复中断，也不会影响用户的体验（看见部分DOM更新不完全）</p>
+<p>这一切的基准点都是从<code>Babel</code>的</p>
+<ol>
+<li>首先需要把代码抽象成一棵抽象语法树（<code>AST</code>）</li>
+<li>然后去解析</li>
+<li>生成浏览器可识别的代码（<code>js</code>）<br>
+<strong>这里以<code>React</code>代码举一个例子:</strong></li>
+</ol>
+<pre><code class="language-javascript">class App extends React.Component {
+  render() {
+      return &lt;div&gt;div&lt;/div&gt;
+  }
+}
+</code></pre>
+<p>这段代码最终会被编译成：<a href="https://www.babeljs.cn/repl#?browsers=&amp;build=&amp;builtIns=false&amp;spec=false&amp;loose=false&amp;code_lz=MYGwhgzhAECCAO9oFMAeAXZA7AJjASsmMOgHQDCA9gLbyVbboDeAUAJABO2OyHAFAEpW0EdC7oArhyzQAPDgCWANwB8ipbID06lS1HQAviyMsgA&amp;debug=false&amp;forceAllTransforms=false&amp;shippedProposals=false&amp;circleciRepo=&amp;evaluate=false&amp;fileSize=false&amp;timeTravel=false&amp;sourceType=module&amp;lineWrap=true&amp;presets=es2015%2Creact&amp;prettier=false&amp;targets=&amp;version=7.5.5&amp;externalPlugins=">Babel</a></p>
+<pre><code class="language-javascript">...
+_createClass(App, [{
+  key: 'render',
+  value: function render() {
+      return React.createElement('div', null, 'div')
+  }
+}])
+... // 省略
+</code></pre>
+<p>从这里我们可以看出来<code>return &lt;div&gt;div&lt;/div&gt;</code>经过解析以及<code>babel</code>的转换之后变成了<code>return React.createElement('div', null, 'div')</code></p>
+</blockquote>
+<h3 id="如何转换">如何转换</h3>
+<blockquote>
+<p>由上文可知，代码最终被转换为<code>React.createElement()</code>这种方式，可以在全局挂载一个<code>React</code>对象，将<code>createElement</code>挂载在<code>React</code>下面</p>
+<pre><code class="language-javascript">const React = {}
+React.createElement = function(tag, attrs, ...children) {
+  return {
+      tag,
+      attrs,
+      children
+  }
+}
+export default React
+</code></pre>
 </blockquote>
  </p>
                     </div>
@@ -261,9 +260,9 @@
                         
                             <div class="next-post">
                                 <div class="next">下一篇</div>
-                                <a href="https://qingwu-aby.github.io/post/0rtsFvZCm/">
+                                <a href="https://qingwu-aby.github.io/post/tui-jin-jie-zou/">
                                     <h3 class="post-title">
-                                        不知名React--1
+                                        前端的一些重点
                                     </h3>
                                 </a>
                             </div>
@@ -298,20 +297,12 @@
 
 <div class="post-toc animated fadeInRight hidden-xs hidden-sm" style="display: none;">
     <ul class="markdownIt-TOC">
-<li><a href="#react%E7%9A%84%E6%9E%B6%E6%9E%84">React的架构</a>
+<li><a href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C">准备工作</a>
 <ul>
-<li><a href="#react15">React15</a>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%99%9A%E6%8B%9Fdom">什么是虚拟DOM</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90%E4%B8%80%E6%A3%B5dom%E6%A0%91">如何生成一棵<code>DOM</code>树</a>
 <ul>
-<li><a href="#reconciler">Reconciler</a></li>
-<li><a href="#renderer">Renderer</a></li>
-<li><a href="#react15%E7%9A%84%E7%BC%BA%E9%99%B7">React15的缺陷</a></li>
-</ul>
-</li>
-<li><a href="#react16">React16</a>
-<ul>
-<li><a href="#scheduler%E8%B0%83%E5%BA%A6%E5%99%A8">Scheduler（调度器）</a></li>
-<li><a href="#reconciler%E5%8D%8F%E8%B0%83%E5%99%A8">Reconciler（协调器）</a></li>
-<li><a href="#renderer%E6%B8%B2%E6%9F%93%E5%99%A8">Renderer（渲染器）</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E8%BD%AC%E6%8D%A2">如何转换</a></li>
 </ul>
 </li>
 </ul>
